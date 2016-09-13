@@ -1,13 +1,9 @@
 ---
-title: "Analysis_v1"
+title: "Gail Score from Facebook - Analysis"
 author: "Divya Narayanan"
 date: "September 10, 2016"
 output: html_document
 ---
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
 ### Project: Gail Score from Facebook
 
 ### Background
