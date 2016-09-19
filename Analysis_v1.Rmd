@@ -1,7 +1,7 @@
 ---
 title: "Gail Score from Facebook - Analysis"
 author: "Divya Narayanan"
-date: "September 10, 2016"
+date: "September 19, 2016"
 output: html_document
 ---
 ### Project: Gail Score from Facebook
@@ -18,9 +18,28 @@ The Gail Score is a risk assessment tool to quantify a woman's risk for developi
 * Prior breast biopsy
 * Race/ethnicity
 
+### Question Development
+#### General Question
+
+Which characteristics about a woman's Facebook profile are most indicative of her risk for developing breast cancer? 
+
+#### Concrete Question 
+
+Can I use quantitative characteristics of a random sample of public profiles in the US to infer important characteristics in determining the risk of breast cancer? 
+
 ### Thoughts about Method
 
 Information utilized by the tool above may not be directly stated on a profile. However, it could be obtained by data-scraping statuses posted by the individual, page likes, or past/future events the individual has or will attend. A potential dataset would be profiles scraped from Facebook of women over the age of 35 in the US. Thresholds and methods would have to be developed to determine if liking a page (e.g. Susan G. Komen Organization) or using certain wordss in a status is indicative of any of the criteria mentioned above. 
+
+### Updates Since 9/13/2016
+* Created app through Facebook API
+    + Obtained token from Facebook OAuth
+    + Use access token for authentication in R 
+
+### Current Issues
+* Under current version of app (v2.7), there is no way 
+
+
 
 ### Plan for Upcoming Week
 
