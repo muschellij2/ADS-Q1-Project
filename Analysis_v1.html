@@ -11,7 +11,7 @@
 
 <meta name="author" content="Divya Narayanan" />
 
-<meta name="date" content="2016-09-10" />
+<meta name="date" content="2016-09-19" />
 
 <title>Gail Score from Facebook - Analysis</title>
 
@@ -118,7 +118,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">Gail Score from Facebook - Analysis</h1>
 <h4 class="author"><em>Divya Narayanan</em></h4>
-<h4 class="date"><em>September 10, 2016</em></h4>
+<h4 class="date"><em>September 19, 2016</em></h4>
 
 </div>
 
@@ -143,32 +143,33 @@ $(document).ready(function () {
 <h3>Question Development</h3>
 <div id="general-question" class="section level4">
 <h4>General Question</h4>
-<p>Which characteristics about a woman’s Facebook profile are most indicative of her risk for developing breast cancer?</p>
+<p>What information from a woman’s Facebook profile is most indicative of her risk for developing breast cancer?</p>
 </div>
 <div id="concrete-question" class="section level4">
 <h4>Concrete Question</h4>
-<p>Can I use quantitative characteristics of a random sample of public profiles in the US to infer important characteristics in determining the risk of breast cancer?</p>
+<p>Based on a random sample of public profiles in the US, how can I weight characteristics to infer the risk of developing breast cancer?</p>
 </div>
 </div>
-<div id="thoughts-about-method" class="section level3">
-<h3>Thoughts about Method</h3>
-<p>Information utilized by the tool above may not be directly stated on a profile. However, it could be obtained by data-scraping statuses posted by the individual, page likes, or past/future events the individual has or will attend. A potential dataset would be profiles scraped from Facebook of women over the age of 35 in the US. Thresholds and methods would have to be developed to determine if liking a page (e.g. Susan G. Komen Organization) or using certain wordss in a status is indicative of any of the criteria mentioned above.</p>
+<div id="description-of-the-data-and-method" class="section level3">
+<h3>Description of the Data and Method</h3>
+<p>Information utilized by the tool above may not be directly stated on a profile. However, it could be obtained by data-scraping statuses posted by the individual, page likes, or past/future events the individual has or will attend. A potential dataset would be profiles scraped from Facebook of women over the age of 35 in the US. Thresholds and methods would have to be developed to determine if liking a page (e.g. Susan G. Komen Organization) or using certain words in a status is indicative of any of the criteria mentioned above.</p>
 </div>
 <div id="updates-since-9132016" class="section level3">
 <h3>Updates Since 9/13/2016</h3>
 <ul>
 <li>Created app through Facebook API
 <ul>
-<li>Obtained token from facebook OAuth</li>
+<li>Obtained token from Facebook OAuth</li>
+</ul></li>
+<li>Downloaded Rfacebook package from CRAN/Github (Pablo Barbera)
+<ul>
 <li>Use access token for authentication in R</li>
 </ul></li>
 </ul>
 </div>
 <div id="current-issues" class="section level3">
 <h3>Current Issues</h3>
-<ul>
-<li>Under current version of app (v2.7), there is no way</li>
-</ul>
+<p>Under current version of app (v2.7), there is no method of getting other friends’ information or public profiles – need to find another way of getting this information</p>
 </div>
 <div id="plan-for-upcoming-week" class="section level3">
 <h3>Plan for Upcoming Week</h3>
@@ -176,6 +177,11 @@ $(document).ready(function () {
 <li>Look into data scraping from Facebook
 <ul>
 <li>See how to obtain such a dataset</li>
+</ul></li>
+<li>Look into Facepager
+<ul>
+<li><a href="https://github.com/strohne/Facepager" class="uri">https://github.com/strohne/Facepager</a></li>
+<li>Data is stored in a SQL database and can be exported to csv</li>
 </ul></li>
 <li>Learn more about how the underpinnings of the Gail Score and how the tool weights each of the variables</li>
 </ul>
