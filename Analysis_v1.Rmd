@@ -21,11 +21,11 @@ The Gail Score is a risk assessment tool to quantify a woman's risk for developi
 ### Question Development
 #### General Question
 
-What information from a woman's Facebook profile is most indicative of her risk for developing breast cancer? 
+What information from a woman's Facebook profile is most indicative of her risk for developing breast cancer, as calculated by the Gail Score? 
 
 #### Concrete Question 
 
-Based on a random sample of public profiles in the US, how can I weight characteristics to infer the risk of developing breast cancer? 
+Based on a random sample of public profiles in the US, how can I weight characteristics derived from a woman's Facebook profile and other sources to calculate the Gail Score and infer the risk of developing breast cancer? 
 
 ### Description of the Data and Method
 
@@ -38,13 +38,16 @@ Information utilized by the tool above may not be directly stated on a profile. 
     + Use access token for authentication in R 
 
 ### Current Issues
-Under current version of app (v2.7), there is no method of getting other friends' information or public profiles -- need to find another way of getting this information 
+* Under current version of app (v2.7) and the Rfacebook package, there is no method of getting other friends' information or public profiles, unless they are using the app -- need to find another way of getting this information 
+* Not all the information needed to calculate the Gail score can be derived from a Facebook profile
 
 ### Plan for Upcoming Week
 
-* Look into data scraping from Facebook
-    + See how to obtain such a dataset
-* Look into Facepager
-    + <https://github.com/strohne/Facepager>
-    + Data is stored in a SQL database and can be exported to csv
-* Learn more about how the underpinnings of the Gail Score and how the tool weights each of the variables
+* Data scraping from Facebook
+    + How to obtain a dataset
+    + Look into Facepager
+        * <https://github.com/strohne/Facepager>
+        * Data is stored in a SQL database and can be exported to csv
+* Find publicly available sources regarding other Gail Score criteria
+* Learn more about how the underpinnings of the Gail Score
+    + How does the existing tool weight each of the variables

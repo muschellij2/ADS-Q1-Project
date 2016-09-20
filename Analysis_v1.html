@@ -143,11 +143,11 @@ $(document).ready(function () {
 <h3>Question Development</h3>
 <div id="general-question" class="section level4">
 <h4>General Question</h4>
-<p>What information from a woman’s Facebook profile is most indicative of her risk for developing breast cancer?</p>
+<p>What information from a woman’s Facebook profile is most indicative of her risk for developing breast cancer, as calculated by the Gail Score?</p>
 </div>
 <div id="concrete-question" class="section level4">
 <h4>Concrete Question</h4>
-<p>Based on a random sample of public profiles in the US, how can I weight characteristics to infer the risk of developing breast cancer?</p>
+<p>Based on a random sample of public profiles in the US, how can I weight characteristics derived from a woman’s Facebook profile and other sources to calculate the Gail Score and infer the risk of developing breast cancer?</p>
 </div>
 </div>
 <div id="description-of-the-data-and-method" class="section level3">
@@ -169,21 +169,28 @@ $(document).ready(function () {
 </div>
 <div id="current-issues" class="section level3">
 <h3>Current Issues</h3>
-<p>Under current version of app (v2.7), there is no method of getting other friends’ information or public profiles – need to find another way of getting this information</p>
+<ul>
+<li>Under current version of app (v2.7) and the Rfacebook package, there is no method of getting other friends’ information or public profiles, unless they are using the app – need to find another way of getting this information</li>
+<li>Not all the information needed to calculate the Gail score can be derived from a Facebook profile</li>
+</ul>
 </div>
 <div id="plan-for-upcoming-week" class="section level3">
 <h3>Plan for Upcoming Week</h3>
 <ul>
-<li>Look into data scraping from Facebook
+<li>Data scraping from Facebook
 <ul>
-<li>See how to obtain such a dataset</li>
-</ul></li>
+<li>How to obtain a dataset</li>
 <li>Look into Facepager
 <ul>
 <li><a href="https://github.com/strohne/Facepager" class="uri">https://github.com/strohne/Facepager</a></li>
 <li>Data is stored in a SQL database and can be exported to csv</li>
 </ul></li>
-<li>Learn more about how the underpinnings of the Gail Score and how the tool weights each of the variables</li>
+</ul></li>
+<li>Find publicly available sources regarding other Gail Score criteria</li>
+<li>Learn more about how the underpinnings of the Gail Score
+<ul>
+<li>How does the existing tool weight each of the variables</li>
+</ul></li>
 </ul>
 </div>
 
