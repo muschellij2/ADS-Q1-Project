@@ -11,7 +11,7 @@
 
 <meta name="author" content="Divya Narayanan" />
 
-<meta name="date" content="2016-09-19" />
+<meta name="date" content="2016-09-26" />
 
 <title>Gail Score from Facebook - Analysis</title>
 
@@ -118,7 +118,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">Gail Score from Facebook - Analysis</h1>
 <h4 class="author"><em>Divya Narayanan</em></h4>
-<h4 class="date"><em>September 19, 2016</em></h4>
+<h4 class="date"><em>September 26, 2016</em></h4>
 
 </div>
 
@@ -154,6 +154,28 @@ $(document).ready(function () {
 <h3>Description of the Data and Method</h3>
 <p>Information utilized by the tool above may not be directly stated on a profile. However, it could be obtained by data-scraping statuses posted by the individual, page likes, or past/future events the individual has or will attend. A potential dataset would be profiles scraped from Facebook of women over the age of 35 in the US. Thresholds and methods would have to be developed to determine if liking a page (e.g. Susan G. Komen Organization) or using certain words in a status is indicative of any of the criteria mentioned above.</p>
 </div>
+<div id="updates-since-9202016" class="section level3">
+<h3>Updates Since 9/20/2016</h3>
+<ul>
+<li>Downloaded sample dataset of 750 posts (easy to increase size)
+<ul>
+<li>Posts/comments from Susan G. Komen FB page (largest breast cancer organization in the US)</li>
+<li>Cleaned to extract public users based on error message
+<ul>
+<li>Removed observations that are organizations or not individuals</li>
+</ul></li>
+<li>Used gender package to determine gender of remaining individuals based on US SSA between 1930 and 2012
+<ul>
+<li>Excluded individuals where name was not recognized</li>
+</ul></li>
+<li>Used wru package to predict race/ethnicity of remaining individuals</li>
+</ul></li>
+<li>Started with downloading of 750 posts/comments
+<ul>
+<li>Yielded cleaned dataset of 139 women</li>
+</ul></li>
+</ul>
+</div>
 <div id="updates-since-9132016" class="section level3">
 <h3>Updates Since 9/13/2016</h3>
 <ul>
@@ -170,27 +192,18 @@ $(document).ready(function () {
 <div id="current-issues" class="section level3">
 <h3>Current Issues</h3>
 <ul>
-<li>Under current version of app (v2.7) and the Rfacebook package, there is no method of getting other friends’ information or public profiles, unless they are using the app – need to find another way of getting this information</li>
 <li>Not all the information needed to calculate the Gail score can be derived from a Facebook profile</li>
+<li>Creating a lot of data – is there a limit to this?
+<ul>
+<li>What proxies can be used for extremely personal/sensitive variables?</li>
+</ul></li>
 </ul>
 </div>
 <div id="plan-for-upcoming-week" class="section level3">
 <h3>Plan for Upcoming Week</h3>
 <ul>
-<li>Data scraping from Facebook
-<ul>
-<li>How to obtain a dataset</li>
-<li>Look into Facepager
-<ul>
-<li><a href="https://github.com/strohne/Facepager" class="uri">https://github.com/strohne/Facepager</a></li>
-<li>Data is stored in a SQL database and can be exported to csv</li>
-</ul></li>
-</ul></li>
-<li>Find publicly available sources regarding other Gail Score criteria</li>
-<li>Learn more about how the underpinnings of the Gail Score
-<ul>
-<li>How does the existing tool weight each of the variables</li>
-</ul></li>
+<li>Draw data from distributions for age at menarche</li>
+<li>What other variables to look at based on existing model?</li>
 </ul>
 </div>
 

@@ -1,7 +1,7 @@
 ---
 title: "Gail Score from Facebook - Analysis"
 author: "Divya Narayanan"
-date: "September 19, 2016"
+date: "September 26, 2016"
 output: html_document
 ---
 ### Project: Gail Score from Facebook
@@ -31,6 +31,17 @@ Based on a random sample of public profiles in the US, how can I weight characte
 
 Information utilized by the tool above may not be directly stated on a profile. However, it could be obtained by data-scraping statuses posted by the individual, page likes, or past/future events the individual has or will attend. A potential dataset would be profiles scraped from Facebook of women over the age of 35 in the US. Thresholds and methods would have to be developed to determine if liking a page (e.g. Susan G. Komen Organization) or using certain words in a status is indicative of any of the criteria mentioned above. 
 
+### Updates Since 9/20/2016
+* Downloaded sample dataset of 750 posts (easy to increase size)
+    + Posts/comments from Susan G. Komen FB page (largest breast cancer organization in the US)
+    + Cleaned to extract public users based on error message
+        * Removed observations that are organizations or not individuals 
+    + Used gender package to determine gender of remaining individuals based on US SSA between 1930 and 2012
+        * Excluded individuals where name was not recognized 
+    + Used wru package to predict race/ethnicity of remaining individuals
+* Started with downloading of 750 posts/comments
+    + Yielded cleaned dataset of 139 women 
+
 ### Updates Since 9/13/2016
 * Created app through Facebook API
     + Obtained token from Facebook OAuth
@@ -38,16 +49,11 @@ Information utilized by the tool above may not be directly stated on a profile. 
     + Use access token for authentication in R 
 
 ### Current Issues
-* Under current version of app (v2.7) and the Rfacebook package, there is no method of getting other friends' information or public profiles, unless they are using the app -- need to find another way of getting this information 
 * Not all the information needed to calculate the Gail score can be derived from a Facebook profile
+* Creating a lot of data -- is there a limit to this? 
+    + What proxies can be used for extremely personal/sensitive variables?
 
 ### Plan for Upcoming Week
-
-* Data scraping from Facebook
-    + How to obtain a dataset
-    + Look into Facepager
-        * <https://github.com/strohne/Facepager>
-        * Data is stored in a SQL database and can be exported to csv
-* Find publicly available sources regarding other Gail Score criteria
-* Learn more about how the underpinnings of the Gail Score
-    + How does the existing tool weight each of the variables
+* Obtain a larger dataset [around 5000 posts]
+* Draw data from distributions for age at menarche 
+* What other variables to look at based on existing model? 
