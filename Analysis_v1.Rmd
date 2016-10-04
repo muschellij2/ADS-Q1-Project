@@ -62,12 +62,6 @@ par(mfrow = c(1,1))
 public_sgk_female_age35_race %>% ggplot(aes(racepredict)) + geom_bar(fill="#880011") + ggtitle("Racial Distribution of Public Facebook Users") + labs(x="Race", y="Count by\nRacial Category") 
 #Age Distribution
 public_sgk_female_age35_race %>% ggplot(aes(age_cat)) + geom_bar(fill="#880011") + ggtitle("Age Distribution of Public Facebook Users") + labs(x="Age", y="Count by\nAge Category") 
-# 
-# par(mfrow = c(2,1))
-# #Race Distribution
-# barplot(table(public_sgk_female_age35_race$racepredict), main = "Racial Distribution of Public Facebook Users", ylab = "Frequency", xlab = "Race")
-# #Age Distribution
-# barplot(table(public_sgk_female_age35_race$age_cat), main = "Age Distribution of Public Facebook Users", ylab = "Frequency", xlab = "Age Category")
 ```
 
 ### Updates Since 9/27/2016
