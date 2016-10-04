@@ -50,7 +50,7 @@ if (!require("dplyr")) install.packages("dplyr"); library(dplyr)
 if (!require("ggplot2")) install.packages("ggplot2"); library(ggplot2)
 
 #Read in Data
-setwd("C:/Users/divya/Documents/JHU/Y2/Q1/Advanced Data Science 711/Term 1 Project/Data")
+setwd("./Data")
 public_sgk_female_age35_race = read.csv(file.path(paste("public_sgk_female_age35_race_", "2016-10-02", "_raw.csv", sep = "")), header = TRUE) 
 public_sgk_female_age35_race$from_id = gsub("\\s", "", format(public_sgk_female_age35_race$from_id, scientific = FALSE))
 ```
