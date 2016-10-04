@@ -1,0 +1,96 @@
+---
+title: "Gail Score from Facebook - Analysis"
+author: "Divya Narayanan"
+date: "October 4, 2016"
+output: html_document
+---
+### Project: Gail Score from Facebook
+
+### Background
+
+The Gail Score is a risk assessment tool to quantify a woman's risk for developing invasive breast cancer. Certain factors, such as age, race, and ancestral history can be indicative of future development. Based on a woman's Facebook profile, this model aims to quantify the risk of invasive breast cancer. For further information, see <http://www.cancer.gov/bcrisktool>. The tool provided utilizes the following variables to make a prediction: 
+
+* Medical history of breast cancer or previous radiation therapy
+* Mutation of either BRCA1 or BRCA2 gene
+* Woman's age (>35)
+* Age at time of first menstrual cycle
+* How many first-degree relatives have breast cancer?
+* Prior breast biopsy
+* Race/ethnicity
+
+### Question Development
+#### General Question
+
+What information from a woman's Facebook profile is most indicative of her risk for developing breast cancer, as calculated by the Gail Score? 
+
+#### Concrete Question  
+
+Based on a random sample of public profiles in the US, how can characteristics derived from a woman's Facebook profile and other sources be weighted to calculate the Gail Score and infer the risk of developing breast cancer? 
+
+### Description of the Data and Method
+
+Information utilized by the tool above may not be directly stated on a profile. However, it could be obtained by data-scraping statuses posted by public pages and retrieving comments and posts. 
+
+#### Method
+
+Interacting with the Facebook API through the Rfacebook package, posts and comments were scraped from the Susan G. Komen Organization Facebook page, representing the largest breast cancer organization in the US. With the hopes of yielding a fairly large sample size, the 2500 most recent posts and comments were scraped on Sunday, October 3, 2016. From this data, an individual was determined a public user if no error message was returned from passing their Facebook ID number through the getUsers function. 
+
+Once public users were identified, names were extracted into first and last name variables to determine the genders and races of the individuals. These were determined based on first and last names, respectively, with predictions from the gender and wru packages, respectively.
+
+To determine the ages of individuals, data from the Social Security Administration between 1930 and 2015 was utilized. Since the age of an individual was not made public through the data scraping, age was estimated to be the median age of all individuals with a given first name. 
+
+Based on the BRCA tool, not all variables are required to make a prediction. However, that may only increase variability in the estimate. Coefficients for variables will be taken from the source code of the BRCAT tool to calculate a predicted Gail Score. 
+
+#### Data
+Of the 2500 comments and posts that were scraped from Facebook, there were 1539 unique public users who posted to the Susan G. Komen page. Of these 1539 individuals, a total of 549 were female. Further subsetting by age, 305 of these women were age 35 and above. Below are the racial and age distributions of the women in the analytic sample:  
+
+```{r include = FALSE}
+if (!require("knitr")) install.packages("knitr"); library(knitr) 
+if (!require("dplyr")) install.packages("dplyr"); library(dplyr)
+if (!require("ggplot2")) install.packages("ggplot2"); library(ggplot2)
+
+#Read in Data
+setwd("./Data")
+public_sgk_female_age35_race = read.csv(file.path(paste("public_sgk_female_age35_race_", "2016-10-02", "_raw.csv", sep = "")), header = TRUE) 
+public_sgk_female_age35_race$from_id = gsub("\\s", "", format(public_sgk_female_age35_race$from_id, scientific = FALSE))
+```
+
+```{r echo = FALSE}
+## @knitr distPlots
+par(mfrow = c(1,1))
+#Race Distribution
+public_sgk_female_age35_race %>% ggplot(aes(racepredict)) + geom_bar(fill="#880011") + ggtitle("Racial Distribution of Public Facebook Users") + labs(x="Race", y="Count by\nRacial Category") 
+#Age Distribution
+public_sgk_female_age35_race %>% ggplot(aes(age_cat)) + geom_bar(fill="#880011") + ggtitle("Age Distribution of Public Facebook Users") + labs(x="Age", y="Count by\nAge Category") 
+```
+
+### Updates Since 9/27/2016
+* "Full", cleaned dataset now of age > 35, race, gender predictions
+* Analysis plan
+    + Extract coefficients from BRCAT source code (in C) based on mostly unknown situations
+    + calculate Gail Score prediction 
+    + Estimates of variability (best way to do this?)
+* Questions 
+    + How to make ID code run faster
+    + Code in Rmd
+
+
+### Limitations
+The current Gail Score Tool is an 8-question tool that based on characteristics, such as age, race, mutation in a BRCA1/2 gene, among others. Often times, even for individuals with public Facebook profiles, it's not possible to extract all this information. Much of this data will come from other publicly available sources, such as SSA data, or through race and gender prediction packages in R.   
+
+### Updates Since 9/20/2016
+* Downloaded sample dataset of 750 posts (easy to increase size)
+    + Posts/comments from Susan G. Komen FB page (largest breast cancer organization in the US)
+    + Cleaned to extract public users based on error message
+        * Removed observations that are organizations or not individuals 
+    + Used gender package to determine gender of remaining individuals based on US SSA between 1930 and 2012
+        * Excluded individuals where name was not recognized 
+    + Used wru package to predict race/ethnicity of remaining individuals
+* Started with downloading of 750 posts/comments
+    + Yielded cleaned dataset of 139 women 
+
+### Updates Since 9/13/2016
+* Created app through Facebook API
+    + Obtained token from Facebook OAuth
+* Downloaded Rfacebook package from CRAN/Github (Pablo Barbera)
+    + Use access token for authentication in R 
