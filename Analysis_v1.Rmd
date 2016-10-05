@@ -8,7 +8,7 @@ output: html_document
 
 ### Background
 
-The Gail Score is a risk assessment tool to quantify a woman's risk for developing invasive breast cancer. Certain factors, such as age, race, and ancestral history can be indicative of future development. Based on a woman's Facebook profile, this model aims to quantify the risk of invasive breast cancer. For further information, see <http://www.cancer.gov/bcrisktool>. The tool provided utilizes the following variables to make a prediction: 
+The Gail Score is a risk assessment tool to quantify a woman's risk for developing invasive breast cancer. Certain factors, such as age, race, and ancestral history can be indicative of future development. Based on a woman's Facebook profile, this model aims to quantify the risk of invasive breast cancer. For further information, see <http://www.cancer.gov/bcrisktool>. The tool provided utilizes the following variables to make a prediction: fawe;klfjwefjl;
 
 * Medical history of breast cancer or previous radiation therapy
 * Mutation of either BRCA1 or BRCA2 gene
