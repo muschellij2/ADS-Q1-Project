@@ -8,7 +8,7 @@ output: html_document
 
 ### Background
 
-The Gail Score is a risk assessment tool to quantify a woman's risk for developing invasive breast cancer. Certain factors, such as age, race, and ancestral history can be indicative of future development. Based on a woman's Facebook profile, this model aims to quantify the risk of invasive breast cancer. For further information, see <http://www.cancer.gov/bcrisktool>. The tool provided utilizes the following variables to make a prediction: fawe;klfjwefjl;
+The Gail Score is a risk assessment tool to quantify a woman's risk for developing invasive breast cancer. Certain factors, such as age, race, and ancestral history can be indicative of future development. Based on a woman's Facebook profile, this model aims to quantify the risk of invasive breast cancer. For further information, see <http://www.cancer.gov/bcrisktool>. The tool provided utilizes the following variables to make a prediction: 
 
 * Medical history of breast cancer or previous radiation therapy
 * Mutation of either BRCA1 or BRCA2 gene
@@ -44,24 +44,8 @@ Based on the BRCA tool, not all variables are required to make a prediction. How
 #### Data
 Of the 2500 comments and posts that were scraped from Facebook, there were 1539 unique public users who posted to the Susan G. Komen page. Of these 1539 individuals, a total of 549 were female. Further subsetting by age, 305 of these women were age 35 and above. Below are the racial and age distributions of the women in the analytic sample:   
 
-```{r include = FALSE}
-if (!require("knitr")) install.packages("knitr"); library(knitr) 
-if (!require("dplyr")) install.packages("dplyr"); library(dplyr)
-if (!require("ggplot2")) install.packages("ggplot2"); library(ggplot2)
-
-#Read in Data
-setwd("./Data")
-public_sgk_female_age35_race = read.csv(file.path(paste("public_sgk_female_age35_race_", "2016-10-02", "_raw.csv", sep = "")), header = TRUE) 
-public_sgk_female_age35_race$from_id = gsub("\\s", "", format(public_sgk_female_age35_race$from_id, scientific = FALSE))
-```
-
 ```{r echo = FALSE}
-## @knitr distPlots
-par(mfrow = c(1,1))
-#Race Distribution
-public_sgk_female_age35_race %>% ggplot(aes(racepredict)) + geom_bar(fill="#880011") + ggtitle("Racial Distribution of Public Facebook Users") + labs(x="Race", y="Count by\nRacial Category") 
-#Age Distribution
-public_sgk_female_age35_race %>% ggplot(aes(age_cat)) + geom_bar(fill="#880011") + ggtitle("Age Distribution of Public Facebook Users") + labs(x="Age", y="Count by\nAge Category") 
+source("4_DataandFigures.R")
 ```
 
 ### Updates Since 9/27/2016
@@ -73,7 +57,6 @@ public_sgk_female_age35_race %>% ggplot(aes(age_cat)) + geom_bar(fill="#880011")
 * Questions 
     + How to make ID code run faster
     + Code in Rmd
-
 
 ### Limitations
 The current Gail Score Tool is an 8-question tool that based on characteristics, such as age, race, mutation in a BRCA1/2 gene, among others. Often times, even for individuals with public Facebook profiles, it's not possible to extract all this information. Much of this data will come from other publicly available sources, such as SSA data, or through race and gender prediction packages in R.   
