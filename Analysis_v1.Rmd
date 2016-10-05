@@ -4,7 +4,7 @@ author: "Divya Narayanan"
 date: "October 4, 2016"
 output: html_document
 ---
-### Project: Gail Score from Facebook
+### Project: Gail Score from Facebook 
 
 ### Background
 
@@ -23,7 +23,7 @@ The Gail Score is a risk assessment tool to quantify a woman's risk for developi
 
 What information from a woman's Facebook profile is most indicative of her risk for developing breast cancer, as calculated by the Gail Score? 
 
-#### Concrete Question 
+#### Concrete Question  
 
 Based on a random sample of public profiles in the US, how can characteristics derived from a woman's Facebook profile and other sources be weighted to calculate the Gail Score and infer the risk of developing breast cancer? 
 
@@ -42,7 +42,7 @@ To determine the ages of individuals, data from the Social Security Administrati
 Based on the BRCA tool, not all variables are required to make a prediction. However, that may only increase variability in the estimate. Coefficients for variables will be taken from the source code of the BRCAT tool to calculate a predicted Gail Score. 
 
 #### Data
-Of the 2500 comments and posts that were scraped from Facebook, there were 1539 unique public users who posted to the Susan G. Komen page. Of these 1539 individuals, a total of 549 were female. Further subsetting by age, 305 of these women were age 35 and above. Below are the racial and age distributions of the women in the analytic sample:  
+Of the 2500 comments and posts that were scraped from Facebook, there were 1539 unique public users who posted to the Susan G. Komen page. Of these 1539 individuals, a total of 549 were female. Further subsetting by age, 305 of these women were age 35 and above. Below are the racial and age distributions of the women in the analytic sample:   
 
 ```{r include = FALSE}
 if (!require("knitr")) install.packages("knitr"); library(knitr) 
