@@ -22,62 +22,60 @@ What information from a woman's Facebook profile is most indicative of her risk 
 
 Based on a random sample of public profiles in the US, how can characteristics derived from a woman's Facebook profile and other sources be weighted to calculate the Gail Score and infer the risk of developing breast cancer? 
 
-* Medical history of breast cancer or previous radiation therapy
-* Mutation of either BRCA1 or BRCA2 gene
-* Woman's age (>35)
-* Age at time of first menstrual cycle
-* How many first-degree relatives have breast cancer?
-* Prior breast biopsy
-* Race/ethnicity
+```{r echo = FALSE}
+# * Medical history of breast cancer or previous radiation therapy
+# * Mutation of either BRCA1 or BRCA2 gene
+# * Woman's age (>35)
+# * Age at time of first menstrual cycle
+# * How many first-degree relatives have breast cancer?
+# * Prior breast biopsy
+# * Race/ethnicity
+```
 
 ### Methods
 
 Much of the information requested by the current Gail model, such as history of breast cancer, mutation of BRCA1 or BRCA2 gene, or prior breast biopsy, is rarely available on public Facebook profiles. However, for the purposes of our analysis, these risk factors were simply left as unknown, and were accounted for as such in calculation of the Gail Score. 
 
+#### Facebook API 
+
 Posts and comments were scraped from the Susan G. Komen Organization (SGK) Facebook page, representing one of the largest breast cancer organization in the US. These data were obtained by interacting with the Facebook API through the `Rfacebook` package. With the hopes of yielding a fairly large sample size, the 2500 most recent posts and comments from the page were scraped on Sunday, October 3, 2016. From this data, individuals were classifed as public or private users based on access to basic demographic information. 
 
-Once public users were identified, names were extracted into first and last name variables to determine the genders and races of the individuals. These were determined based on first and last names, respectively, with predictions from the `gender` and `wru` packages, respectively.To determine the ages of individuals, data from the Social Security Administration between 1930 and 2015 was utilized. Since age of an individual was not made public through data scraping, age was estimated to be the median age of individuals with a given first name and appropriate variability estimates were obtained.
+#### Age, Race, and Gender Prediction 
+Once public users were identified, names were extracted into first and last name variables to determine the genders and races of the individuals. These were determined based on first and last names, respectively, with predictions from the `gender` and `wru` packages, respectively.To determine the ages of individuals, data from the Social Security Administration between 1930 and 2015 was utilized. Since age of an individual was not made public through data scraping, age was estimated to be the median age of individuals with a given first name and appropriate variability estimates were obtained. The resulting age distributions were bootstrapped to obtain variability estimates, as seen below. 
+
+Through the `wru` package, race predictions for White/Caucasians, African-Americans, Asians, Hispanics, and an all-encompassing Other category were determined based on data available through SSA data from 1930-2015. 
+
+#### Absolute Risk of Breast Cancer
+The absolute 5-year risk of developing breast cancer was calculated with the `BCRA` package, as developed by the National Cancer Institute [3]. 
 
 #### Data
 
-Scraping of the 2500 comments and posts yielded 1539 unique public users who posted to the Susan G. Komen page. Of these 1539 individuals, 549 were female. Further subsetting by age, 305 of these women were age 35 and above. Below are the racial and age distributions of the women in the analytic sample:   
+Scraping of the 2500 comments and posts yielded 1539 unique public users who posted to the Susan G. Komen page. Of these 1539 individuals, 549 were female. Further subsetting by age, 305 of these women were age 35 and above. To estimate the variability in age determination by the median, age distributions were bootstrapped. 4 examples are shown below, along with the standard error estimates across all individuals: 
 
-```{r echo = FALSE}
+```{r echo = FALSE, warnings = FALSE}
+library(lubridate)
 source("6_DataandFigures.R")
 ```
+
+The racial and age distributions of the women in the analytic sample can be seen below: 
+
+```{r echo = FALSE}
+print(race_dist_plot)
+print(agecat_dist_plot)
+```
+
+### Limitations
+The current Gail Score Tool is an 8-question tool that based on characteristics, such as age, race, mutation in a BRCA1/2 gene, among others. Often times, even for individuals with public Facebook profiles, it's not possible to extract all this information. Due to privacy and time constraints, much of this data came from other publicly available sources, such as SSA data, or the `wru` and `gender` prediction packages in R. The `BCRA` package allowed for many of the variables typically required to be marked as unknown. However, this will only increase variability in our estimate.   
 
 ### References 
 1. https://www.cancer.gov/bcrisktool/about-tool.aspx#gail
 2. http://www.cancer.org/acs/groups/content/documents/image/acspc-043955.pdf
+3. http://dceg.cancer.gov/tools/risk-assessment/bcra
 
 ### Updates since 10/04/2016
-
-### Updates Since 9/27/2016
-* "Full", cleaned dataset now of age > 35, race, gender predictions
-* Analysis plan
-    + Extract coefficients from BRCAT source code (in C) based on mostly unknown situations
-    + calculate Gail Score prediction 
-    + Estimates of variability (best way to do this?)
-* Questions 
-    + How to make ID code run faster
-    + Code in Rmd
-
-### Limitations
-The current Gail Score Tool is an 8-question tool that based on characteristics, such as age, race, mutation in a BRCA1/2 gene, among others. Often times, even for individuals with public Facebook profiles, it's not possible to extract all this information. Much of this data will come from other publicly available sources, such as SSA data, or through race and gender prediction packages in R.   
-
-### Updates Since 9/20/2016
-* Downloaded sample dataset of 750 posts (easy to increase size)
-    + Posts/comments from Susan G. Komen FB page (largest breast cancer organization in the US)
-    + Cleaned to extract public users based on error message
-        * Removed observations that are organizations or not individuals 
-    + Used gender package to determine gender of remaining individuals based on US SSA between 1930 and 2012
-        * Excluded individuals where name was not recognized 
-    + Used wru package to predict race/ethnicity of remaining individuals
-* Started with downloading of 750 posts/comments
-    + Yielded cleaned dataset of 139 women 
-
-### Updates Since 9/13/2016
-* Created app through Facebook API
-    + Obtained token from Facebook OAuth
-* Downloaded Rfacebook package from CRAN/Github (Pablo Barbera)
-    + Use access token for authentication in R 
+* BCRA R package through NCI used to calculate absolute risk of breast cancer 
+* Bootstrapped age estimates as measure of uncertainty 
+    + Generated example plots and distribution of SE
+* To-Do: 
+    + Variability estimates for race and gender
+    + Relative risk of breast cancer 
