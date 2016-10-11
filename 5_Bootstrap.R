@@ -19,6 +19,7 @@ age_se = sapply(1:length(unique_names_in_fem_merge), age_bootstrap)
 age_se_df = data.frame(FirstName = unique_names_in_fem_merge, SEestimate = age_se)
 med_age_se = left_join(public_sgk_data_merge_female_age35, age_se_df)
 med_age_se = med_age_se %>% select(from_id, FirstName, MedianYr, age, SEestimate)
+med_age_se = write_csv(med_age_se, paste("C:/Users/divya/Documents/JHU/Y2/Q1/Advanced Data Science 711/Term 1 Project/Data/med_age_se_", filedate, "_raw.csv", sep = ""))
 
 #Distributional Plots of Bootstrap Names
 age_bootstrap_plot = function(x){
