@@ -11,20 +11,23 @@ public_sgk_female_age35_race_BCRA = read.csv(file.path(paste("public_sgk_female_
 public_sgk_female_age35_race_BCRA$from_id = gsub("\\s", "", format(public_sgk_female_age35_race_BCRA$from_id, scientific = FALSE))
 public_sgk_female_age35_race_BCRA$race.predict = as.character(public_sgk_female_age35_race_BCRA$racepredict)
 age_subset_merge = read.csv(file.path(paste("C:/Users/divya/Documents/JHU/Y2/Q1/Advanced Data Science 711/Term 1 Project/Data/age_subset_merge", "_", "2016-10-02", "_raw.csv", sep = "")))
+med_age_se = read.csv(file.path(paste("C:/Users/divya/Documents/JHU/Y2/Q1/Advanced Data Science 711/Term 1 Project/Data/med_age_se_", "2016-10-02", "_raw.csv", sep = "")))
+med_age_se$from_id = gsub("\\s", "", format(med_age_se$from_id, scientific = FALSE))
 
-library(ggplot2); library(lubridate)
+library(ggplot2); #library(lubridate)
 par(mfrow = c(1,1))
 #Race Distribution
 # jpeg('../Figures/race_dist_plot.jpg')
-print(ggplot(public_sgk_female_age35_race, aes(racepredict)) + geom_bar(fill="#880011") + ggtitle("Racial Distribution of Public Facebook Users") + labs(x="Race", y="Count by\nRacial Category"))
+race_dist_plot = ggplot(public_sgk_female_age35_race, aes(racepredict)) + geom_bar(fill="#880011") + ggtitle("Racial Distribution of Public Facebook Users") + labs(x="Race", y="Count by\nRacial Category")
 # dev.off()
 
 #Age Distribution
 # jpeg('../Figures/agecat_dist_plot.jpg')
-print(ggplot(public_sgk_female_age35_race, aes(age_cat)) + geom_bar(fill="#880011") + ggtitle("Age Distribution of Public Facebook Users") + labs(x="Age", y="Count by\nAge Category"))
+agecat_dist_plot = ggplot(public_sgk_female_age35_race, aes(age_cat)) + geom_bar(fill="#880011") + ggtitle("Age Distribution of Public Facebook Users") + labs(x="Age", y="Count by\nAge Category")
 # dev.off()
 
 #Distributional Plots of Bootstrap Names
+par(mfrow = c(2,2))
 age_bootstrap_plot = function(x){
   a = which(age_subset_merge$FirstName == x)
   bs.samp = lapply(1:1000, function(i)
@@ -38,6 +41,11 @@ unique_names_final = as.character(unique(public_sgk_female_age35_race_BCRA$First
 sampname = sample(unique_names_final, 4)
 sapply(sampname, age_bootstrap_plot)
 
+#Distribution of Standard Errors from Bootstrapping
+se_plot = ggplot(med_age_se) + geom_histogram(aes(SEestimate)) + labs(title = "Distribution of Bootstrapping SE Estimates", x = "Standard Error")
+print(se_plot)
+
+#Absolute Risk by Race plot 
 df = public_sgk_female_age35_race_BCRA
 df$color = ifelse(df$Race == "white", "blue", ifelse(df$Race == "white", "red", ""))
 risk_by_race = ggplot(df) + geom_histogram(aes(abs.risk)) + facet_wrap(~racepredict) + labs(title = "Distribution of Absolute Risk of Breast Cancer Across Races", x = "Absolute Risk of Breast Cancer")
