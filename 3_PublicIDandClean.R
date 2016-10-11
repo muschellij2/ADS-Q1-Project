@@ -1,3 +1,16 @@
+##Packages
+ipak = function(pkg){
+  new.pkg = pkg[!(pkg %in% installed.packages()[, "Package"])]
+  if (length(new.pkg)) 
+    install.packages(new.pkg, dependencies = TRUE)
+  sapply(pkg, require, character.only = TRUE)
+}
+
+# Usage
+packages = c("gender", "tidyr", "dplyr", "data.table", "wru", "readr", "knitr", "ggplot2", "BCRA")
+ipak(packages)
+
+
 #Read in Data
 wd = "C:/Users/divya/Documents/JHU/Y2/Q1/Advanced Data Science 711/Term 1 Project/Data"
 setwd(wd)
@@ -23,13 +36,18 @@ extractPubID = function(ids){
   return(out)
 }
 
-ptm_start = proc.time() #start time 
-idstatus = as.vector(unlist(sapply(sgk_data[,1], extractPubID)))
-ptm_stop = proc.time() - ptm_start #stop time 
-
+if(!file.exists(paste("idstatus_",filedate,"_raw.csv", sep = ""))){
+  ptm_start = proc.time() #start time 
+  idstatus = as.vector(unlist(sapply(sgk_data[,1], extractPubID)))
+  ptm_stop = proc.time() - ptm_start #stop time 
+  write_csv(as.data.frame(idstatus), paste("C:/Users/divya/Documents/JHU/Y2/Q1/Advanced Data Science 711/Term 1 Project/Data/idstatus", "_", filedate, "_raw.csv", sep = ""))
+} else {
+  idstatus = read.csv(file.path(paste("C:/Users/divya/Documents/JHU/Y2/Q1/Advanced Data Science 711/Term 1 Project/Data/idstatus", "_", filedate, "_raw.csv", sep = "")), header = TRUE) 
+  idstatus = gsub("\\s", "", format(idstatus$idstatus, scientific = FALSE))
+  # idstatus = format(idstatus$idstatus, scientific = FALSE)
+}
 #sum(!is.na(idstatus)) #Number of public profiles
 #length(unique(idstatus[which(!is.na(idstatus))])) #Number of unique public profiles 
-
 # which(sgk_data$from_id %in% unique(idstatus[which(!is.na(idstatus))])) #which are public in original DF
 
 #Dataframe of Unique Public Profiles 
@@ -40,8 +58,6 @@ public_sgk_data$from_name = iconv(public_sgk_data$from_name, "UTF-8", "ASCII")
 public_sgk_data = public_sgk_data[-c(which(is.na(public_sgk_data$from_name)), grep("Komen",public_sgk_data$from_name), grep("<", public_sgk_data$from_name)),]
 
 #Identify genders of public individuals 
-if (!require("gender")) install.packages("gender"); 
-if (!require("tidyr")) install.packages("tidyr")
 library(gender); library(tidyr); library(dplyr)
 
 #Split names into first and last to identify gender and race
@@ -87,17 +103,22 @@ unique_names_in_fem_merge = as.character(names_in_fem_merge$FirstName[which(name
 age_sort_subset = left_join(age_sort, names_in_fem_merge)
 age_sort_subset = age_sort_subset[-which(age_sort_subset$InMerge == F), ]
 
-require(data.table)
+library(data.table)
 age_sort_subset = data.table(age_sort_subset)
 
 #Setup data to calculate median age between 1930 and 2015 based on SSA data
 age_new = data.frame(FirstName = rep(unique_names_in_fem_merge, each = 86), year = rep(seq(1930,2015), times = length(unique_names_in_fem_merge)))
+
+#Create frequence and cum.sum columns for age data 
 age_subset_merge = right_join(age_sort_subset, age_new)
 age_subset_merge$frequency[is.na(age_subset_merge$frequency)] = 0
 age_subset_merge = data.table(age_subset_merge)
-
 age_subset_merge = age_subset_merge[, Cum.Sum := cumsum(frequency), by=list(FirstName)]
 
+#Calculate weighted probability of name in each year, based on Cum Sum 
+age_subset_merge$weighted.prob = age_subset_merge$frequency / rep(age_subset_merge$Cum.Sum[seq(86, nrow(age_subset_merge), by = 86)], each = 86)
+
+#Function to calculate grouped mean 
 grouped_median = function(x){
   a = which(age_subset_merge$FirstName == unique_names_in_fem_merge[x])
   v = age_subset_merge$Cum.Sum[a] # create two bins [5,10) and [10,15)
@@ -113,12 +134,13 @@ grouped_median = function(x){
   return(list(FirstName = unique_names_in_fem_merge[x], MedianYr = median_estimate))
 }
 
+#Create temporary dataframe with grouped median per name, calculate age based on median yr 
 output = as.data.frame(t(sapply(1:length(unique_names_in_fem_merge), grouped_median)))
-output$age = 2016 - as.numeric(output$MedianYr)
-output$FirstName = as.character(output$FirstName)
+output$age = year(Sys.Date()) - as.numeric(output$MedianYr)
+output$FirstName = as.character(output$FirstName); output$MedianYr = as.numeric(output$MedianYr)
 
 public_sgk_data_merge_female_age = left_join(public_sgk_data_merge_female, output)
-rm(output)
+# rm(output)
 public_sgk_data_merge_female_age35 = public_sgk_data_merge_female_age[which(public_sgk_data_merge_female_age$age > 35),]
 
 #Categorize age
@@ -129,8 +151,7 @@ levels(public_sgk_data_merge_female_age35$age_cat) = c("[35-40)", "[40-45)", "[4
 ### RACE DETERMINATION ###
 ##########################
 
-if (!require("wru")) install.packages("wru"); library(wru)
-if (!require("readr")) install.packages("readr"); library(readr)
+library(wru); library(readr)
 
 names(public_sgk_data_merge_female) = c("from_id", "from_name", "FirstName", "surname", "sex")
 race_pred = race.pred(public_sgk_data_merge_female, races = c("white", "black", "latino", "asian", "other"), surname.only = T)
@@ -159,7 +180,9 @@ public_sgk_data_race$racepredict = as.factor(public_sgk_data_race$racepredict)
 public_sgk_female_age35_race = left_join(public_sgk_data_merge_female_age35, public_sgk_data_race)
 public_sgk_female_age35_race$MedianYr = as.numeric(public_sgk_female_age35_race$MedianYr)
 
+write_csv(age_subset_merge, paste("C:/Users/divya/Documents/JHU/Y2/Q1/Advanced Data Science 711/Term 1 Project/Data/age_subset_merge", "_", filedate, "_raw.csv", sep = ""))
 write_csv(public_sgk_female_age35_race, paste("C:/Users/divya/Documents/JHU/Y2/Q1/Advanced Data Science 711/Term 1 Project/Data/public_sgk_female_age35_race", "_", filedate, "_raw.csv", sep = ""))
+
 
 
 getwd()
@@ -169,15 +192,10 @@ getwd()
 # dev.off()
 
 
-if (!require("knitr")) install.packages("knitr"); library(knitr)
-## @knitr distPlots
-par(mfrow = c(2,1))
-#Race Distribution
-barplot(table(public_sgk_female_age35_race$racepredict), main = "Racial Distribution of Public Facebook Users", ylab = "Frequency", xlab = "Race")
-#Age Distribution
-barplot(table(public_sgk_female_age35_race$age_cat), main = "Age Distribution of Public Facebook Users", ylab = "Frequency", xlab = "Age Category")
-
-#To-Do: 
-#Look through source code 
-#Variability in age 
-#Put in if statement for public/private so don't have to run ID
+# library(knitr)
+# ## @knitr distPlots
+# par(mfrow = c(2,1))
+# #Race Distribution
+# barplot(table(public_sgk_female_age35_race$racepredict), main = "Racial Distribution of Public Facebook Users", ylab = "Frequency", xlab = "Race")
+# #Age Distribution
+# barplot(table(public_sgk_female_age35_race$age_cat), main = "Age Distribution of Public Facebook Users", ylab = "Frequency", xlab = "Age Category")
