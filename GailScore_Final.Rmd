@@ -50,7 +50,10 @@ The absolute 5-year risk of developing breast cancer was calculated with the `BC
 
 #### Data
 
-Scraping of the 2500 comments and posts yielded 1539 unique public users who posted to the Susan G. Komen page. Of these 1539 individuals, 549 were female. Further subsetting by age, 305 of these women were age 35 and above. To estimate the variability in age determination by the median, age distributions were bootstrapped. 4 examples are shown below, along with the standard error estimates across all individuals: 
+Scraping of the 2500 comments and posts yielded 1539 unique public users who posted to the Susan G. Komen page. Of these 1539 individuals, 549 were female. Further subsetting by age, 305 of these women were age 35 and above. To estimate the variability in age determination by the median, age distributions were bootstrapped. 
+
+### Results 
+4 examples are shown below, along with the standard error estimates across all individuals: 
 
 ```{r echo = FALSE, warnings = FALSE}
 library(lubridate)
@@ -62,6 +65,12 @@ The racial and age distributions of the women in the analytic sample can be seen
 ```{r echo = FALSE}
 print(race_dist_plot)
 print(agecat_dist_plot)
+```
+
+One interesting find is that based on the public information that was gathered and estimated, there is no one who is at high risk for breast cancer, based on the absolute risk calculations seen below and using a threshold of 1.66%: 
+
+```{r eval = TRUE}
+summary(public_sgk_female_age35_race_BCRA$abs.risk)
 ```
 
 ### Limitations
